@@ -21,7 +21,7 @@ class Loss(Diff_Func):
         Returns:
         same grad value from calc_Grad()
         """
-        return self.calc_Grad (X, Y)
+        return self.grad['X']
     def calc_Grad(self, X, Y):
         """
         Local gradient with respect to X at (X, Y).
@@ -65,7 +65,8 @@ class Cross_Entropy_Loss(Loss):
         temp_grad=probs
         for i in range (Y.size):
             temp_grad[i,Y[i]]-=1
-        grad=temp_grad
+        grad={}
+        grad['X']=temp_grad
         return grad
 
 
@@ -81,7 +82,7 @@ class Cross_Entropy_Loss(Loss):
 
 ########################## Test case################################
 
-list1=[[1,2,3,4,5,6],[6,2,3,4,6,7],[3,5,7,8,3,5],[1,5,8,4,5,6],[1,2,6,4,8,6]]
+"""list1=[[1,2,3,4,5,6],[6,2,3,4,6,7],[3,5,7,8,3,5],[1,5,8,4,5,6],[1,2,6,4,8,6]]
 list2=[5,3,5,2,1]
 X=np.array(list1)
 Y=np.array(list2)
@@ -89,4 +90,46 @@ loss1=Cross_Entropy_Loss()
 foro=loss1.forward(X,Y)
 print(foro)
 back=loss1.backward()
-print(back)
+print(back)"""
+
+
+class MeanSquareLoss(Loss):
+    """
+        Abstract Class to represent the Construction of the Loss Functions
+    """
+    def forward(self, X, Y):
+        """
+        X=output of layers
+        Y=True labels
+
+        """
+        err = np.zeros(X.size)
+        squ_sub = np.zeros(X.size)
+        err = np.subtract(X,Y)
+        squ_sub = np.square(err)
+        sum = np.sum(squ_sub,axis=1 ,keepdims= True)
+        total_loss = np.average(sum)
+
+        return total_loss
+
+
+
+    def calc_Grad(self, X, Y):
+        """
+        Local gradient with respect to X at (X, Y).
+        Args:
+
+        """
+        grad = {}
+        grad['X'] = 2*(X-Y)
+
+        return grad
+
+
+#Test Case for MSE
+u = [[1, 2, 3, 4], [3, 2, 1, 3], [2, 9, 2, 3]]
+v = [[2, 1, 3, 4], [2, 3, 4, 3], [3, 2, 5, 1]]
+X = np.array(u)
+Y = np.array(v)
+mse = MeanSquareLoss().forward(X, Y)
+print(mse)
