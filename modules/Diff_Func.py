@@ -13,7 +13,7 @@ class Diff_Func :
         # Calc Forward path
         output = self.forward(*arg,**kargs)
         #Calc grads
-        grad = self.calc_Grad(*arg,**kargs)
+        self.grad = self.calc_Grad(*arg,**kargs)
         
         return output
     

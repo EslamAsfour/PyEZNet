@@ -65,9 +65,9 @@ class Conv2D(Layer):
         
         # W size (F , C , W , H)
         self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ) )
-                       'b' : np.zeros(shape= (self.Num_Filters , 1))    }
-     
-     
+                       'b' : np.zeros(shape= (self.Num_Filters , 1)) }
+    
+    
     def forward(self, X):
         '''
             Input : 
@@ -87,7 +87,7 @@ class Conv2D(Layer):
         
         N , Ch , H , W = X.shape
         
-        Filter_W , Filter_H = self.Filter_Dim
+        Filter_H , Filter_W = self.Filter_Dim
         
         # Note : Padding Already Added from the Function Above so we dont need to add it here 
         W_out = ((W - Filter_W )/self.Stride) + 1
@@ -112,6 +112,56 @@ class Conv2D(Layer):
         return Y
                     
             
+    def backward(self , dY):
+    '''
+        The Goal is to calc :
+            1- dW/dL    -> Conv(X , dY/dl)
+            2- dB/dL        Conv(X , dY/dl)
+            3- dX/dL
+    '''
+        # Load X from the cache
+        X = self.cache['X']
+        # dX same shape as X
+        dX = np.zeros_like(X)
+        N ,CH ,H ,W = X.shape
+        
+        Filter_H , Filter_W = self.Filter_Dim
+        
+        # Calc dX
+        #Loop Over every img
+        for n in range(N):
+            # Loop over filters
+            for C_out in range(self.Num_Filters):
+                # Loop over h,w
+                for h,w in product(range(dY.shape[2]),range(dY.shape[3])):
+                    H_offset , W_offset = h*self.Stride , w*self.Stride
+                    #                                                                                          filter index
+                    dX[n,C_out, H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.Weights['W'][C_out] * dY[n,C_out,h,w]
+                    
+        # Calc dW
+        dW = np.zeros_like(self.Weights['W'])
+        
+        # Loop over filters
+        for c_w in range(self.Num_Filters):
+            for c_i in range(self.in_Channels):
+                for h,w in product(range(Filter_H),range(Filter_W)):
+                    ######################################################## Msh fahm #####################################################
+                    Sub_X = X[: , c_i , h:H-Filter_H+h+1:self.stride  , w: W-Filter_W+w+1:self.stride ]
+                    dY_rec_field = dY[:, c_w]
+                    dW[c_w, c_i, h ,w] = np.sum(Sub_X*dY_rec_field)
+                        ##################################################### #####################################################
+                        
+        # Calc dB
+        ######################### Msh Fahmm #############################
+        dB = np.sum(dY, axis=(0, 2, 3)).reshape(-1, 1)
+        ######################################################
+        # caching the global gradients of the parameters
+        self.weight_update['W'] = dW
+        self.weight_update['b'] = db
+        
+        
+        return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
+        
         
         
         
