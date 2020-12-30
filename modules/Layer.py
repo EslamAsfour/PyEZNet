@@ -2,6 +2,8 @@ from Diff_Fun import Diff_Func
 import numpy as np
 from math import sqrt
 from itertools import product
+from utils import ZeroPadding
+
 
 class Layer (Diff_Func):
 """
@@ -77,7 +79,8 @@ class Conv2D(Layer):
         '''
         # if we have Padding we first adjust the X 
         if self.Pad != 0:
-            # -------------------- Creat ZeroPadding FN----------------------- #
+            #Dims always (2,3) H,W 
+            X = ZeroPadding(X , self.Pad , dims=(2,3))
             
         #Save input for backProp
         self.cache ={'X' : X}
