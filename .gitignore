@@ -1,2 +1,4 @@
-My_Resources.txt
-.vscode
+*.vscode
+*.txt
+modules/__pycache__/
+
