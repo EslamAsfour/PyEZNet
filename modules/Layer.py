@@ -29,7 +29,7 @@ class Layer (Diff_Func):
         for weight_key , weight in self.weights.item():
             self.weights[weight_key] = self.weights[weight_key] - learningRate * self.weights_Update[weight_key]
 
-class MaxPool2D(Function):
+class MaxPool2D(Diff_Func):
 ###############################################################################
 #
 # Class: MaxPool2D
@@ -71,7 +71,7 @@ class MaxPool2D(Function):
                        repeats=self.kernel_size[1], axis=3)
         return self.grad['X']*dY
 
-    def local_grad(self, X):
+    def calc_Grad(self, X):
         # small hack: because for MaxPool calculating the gradient is simpler during
         # the forward pass, it is calculated there and this function just returns the
         # grad dictionary
@@ -101,7 +101,7 @@ class Conv2D(Layer):
         self.Filter_Dim = (Kernal_Size,Kernal_Size)
 
         #Based on the (Filter_Dim, in_Channels, Num_Filters) we init our weights
-        self.init_Weights()
+        self.init_weights()
 
     # Generate random values in a normal distribution for ( W ) - zeros for the Bias
     def init_Weights(self):
@@ -200,8 +200,8 @@ class Conv2D(Layer):
         dB = np.sum(dY, axis=(0, 2, 3)).reshape(-1, 1)
         ######################################################
         # caching the global gradients of the parameters
-        self.weights_update['W'] = dW
-        self.weights_update['b'] = dB
+        self.weights_Update['W'] = dW
+        self.weights_Update['b'] = dB
 
 
         return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
@@ -213,7 +213,7 @@ class FullyConnectedLayer(Layer):
          self._init_weights(input_dim,output_dim)
 
 
-     def _init_weights(self,input_dim,output_dim):
+     def _init_Weights(self,input_dim,output_dim):
          scale = 1/ sqrt(input_dim)
          #input_dim= rows , output_dim = columns
          self.weights['W'] = scale *np.random.randn(input_dim,output_dim)

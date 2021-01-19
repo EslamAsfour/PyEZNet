@@ -3,30 +3,6 @@ import numpy as np
 from PIL import Image
 
 
-
-def zero_pad(X,pad_width,dims):
-    '''
-    pad the given array x with zeros at both end of given dim
-    :param X: numpy array
-    :param pad_width: width of padding
-    :param dims: dimensions to be padded
-    :return: numpy array with zero padding X
-
-    '''
-    dims = (dims) if isinstance(dims,int) else dims
-    '''
-    isinstance return true if dims is int so dims = tuple dims else will be equal itself
-    '''
-    pad=[(0,0) if idx not in dims else (pad_width,pad_width)
-         for idx in range(len(X.shape))]
-    x_padded=np.pad(X,pad,'constant')
-    return x_padded
-
-
-
-
-
-
 def data_loader(folderpath):
     images= []
     lables= []
