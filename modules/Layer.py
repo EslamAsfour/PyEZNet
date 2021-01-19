@@ -101,7 +101,7 @@ class Conv2D(Layer):
         self.Filter_Dim = (Kernal_Size,Kernal_Size)
 
         #Based on the (Filter_Dim, in_Channels, Num_Filters) we init our weights
-        self.init_weights()
+        self.init_Weights()
 
     # Generate random values in a normal distribution for ( W ) - zeros for the Bias
     def init_Weights(self):
