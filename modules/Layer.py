@@ -17,8 +17,8 @@ class Layer (Diff_Func):
         # Call Diff_Func init function
         super().__init__(*args, **kwargs)
         # Empty Weights and updates
-        self.Weights = {}
-        self.Weights_Update = {}
+        self.weights = {}
+        self.weights_Update = {}
         
      # Function to initalize weights   
     def init_Weights(self , *args, **kwargs):
@@ -26,8 +26,8 @@ class Layer (Diff_Func):
      
     def Update_Weights(self , learningRate):
          
-        for weight_key , weight in self.Weights.item():
-            self.Weights[weight_key] = self.Weights[weight_key] - learningRate * self.Weights_Update[weight_key]
+        for weight_key , weight in self.weights.item():
+            self.weights[weight_key] = self.weights[weight_key] - learningRate * self.weights_Update[weight_key]
 
 
 
@@ -62,7 +62,7 @@ class Conv2D(Layer):
         scale = 2/sqrt(self.in_Channels * self.Filter_Dim[0] * self.Filter_Dim[1])
 
         # W size (F , C , W , H)
-        self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
+        self.weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
                        ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
         #self.Weights= {'W' : [[[[-0.2392, -0.0492, -0.0347],
         #                     [-0.3049, -0.1630,  0.1242],
@@ -108,7 +108,7 @@ class Conv2D(Layer):
                     # Select [ one img (n)  , All the Ch , Offset+ Filter_h , Offset+Filter_W ]
                     Sub_X = X[n , : , H_offset: (H_offset + Filter_H) , W_offset: (W_offset + Filter_W)  ]
 
-                    Y[n , C_out , h , w ] = np.sum(self.Weights['W'][C_out] * Sub_X) + self.Weights['b'][C_out]
+                    Y[n , C_out , h , w ] = np.sum(self.weights['W'][C_out] * Sub_X) + self.weights['b'][C_out]
         return Y
     def backward(self , dY):
         '''
@@ -134,10 +134,10 @@ class Conv2D(Layer):
                 for h,w in product(range(dY.shape[2]),range(dY.shape[3])):
                     H_offset , W_offset = h*self.Stride , w*self.Stride
                     #                                                                                          filter index
-                    dX[n,C_out, H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.Weights['W'][C_out] * dY[n,C_out,h,w]
+                    dX[n,C_out, H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.weights['W'][C_out] * dY[n,C_out,h,w]
 
         # Calc dW
-        dW = np.zeros_like(self.Weights['W'])
+        dW = np.zeros_like(self.weights['W'])
 
         # Loop over filters
         for c_w in range(self.Num_Filters):
@@ -154,19 +154,18 @@ class Conv2D(Layer):
         dB = np.sum(dY, axis=(0, 2, 3)).reshape(-1, 1)
         ######################################################
         # caching the global gradients of the parameters
-        self.weight_update['W'] = dW
-        self.weight_update['b'] = dB
+        self.weights_update['W'] = dW
+        self.weights_update['b'] = dB
 
 
         return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
 
 class FullyConnectedLayer(Layer):
 
-     def __init__self(self,input_dim,output_dim):
+     def __init__(self,input_dim,output_dim):
          self().__init__()      #inheret initial function from our parent class 'Layer'
          self._init_weights(input_dim,output_dim)
-         self.cache = {}
-         self.weight_update = {}
+
 
      def _init_weights(self,input_dim,output_dim):
          scale = 1/ sqrt(input_dim)
@@ -176,17 +175,17 @@ class FullyConnectedLayer(Layer):
          self.weights['b'] = scale *np.random.randn(1,output_dim)
 
 
-     def Forward(self,X):
+     def forward(self,X):
 
     # forwar function take X 'vector of numpy array' where it's size is (no_of_batch,input_dim)
     # and it's output is Y = (WX+b)
-        output=np.dot(X,self.Weights['W']) + self.Weights['b']
+        output=np.dot(X,self.weights['W']) + self.weights['b']
     #cashe it's like a dictionary to save the answer of a frequent qeustions
         self.cache['X']=X
         self.cache['output']=output
         return output
 
-     def Backword(self,dY):
+     def backward(self,dY):
     # Our goal with backpropagation is to update each of the weights in the network
     # so that they cause the actual output to be closer the target output using 'Chain Rule'
         dX=dY.dot(self.grad['X'].T)
@@ -200,15 +199,15 @@ class FullyConnectedLayer(Layer):
     # keepdims=True means that the result will broadcast correctly against the input array.
     # axis=0 means will sum all of the elements of the input array.
     # dY is the elements to sum
-        self.weight_update={'W':dw,['b']:db}
+        self.weights_update={'W':dw,['b']:db}
         return dX
 
 
-     def grad(self,X):
+     def calc_Grad(self,X):
 
-         gradX_local = self.weight['W'] #weight hena gaya mn class function el kber el lsa hyt3mlo implementation
+         gradX_local = self.weights['W'] #weight hena gaya mn class function el kber el lsa hyt3mlo implementation
          gradW_local= X
-         gradb_local = np.ones_like(self.weight['b'])
+         gradb_local = np.ones_like(self.weights['b'])
          grads = {'X': gradX_local, 'W': gradW_local, 'b': gradb_local}
          return grads
 

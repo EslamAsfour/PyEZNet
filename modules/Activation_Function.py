@@ -24,7 +24,7 @@ class Linear(Diff_Func):
         return dY * self.grad['x']
 
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         y = 1
         grads = {'x' : y}
         return grads
@@ -38,7 +38,7 @@ class Sin(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         y = cos(x)
         grads = {'x' : y}
         return grads
@@ -52,7 +52,7 @@ class Tanh(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         y = 1.0 - (np.tanh(x))**2
         grads = {'x' : y}
         return grads
@@ -66,7 +66,7 @@ class Sigmoid(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         s=1/(1+np.exp(-x))
         y = s*(1-s)
         grads = {'x' : y}
@@ -83,7 +83,7 @@ class Relu(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         if x<0.0:
             y =0
             grads = {'x' : y}
@@ -106,7 +106,7 @@ class Leaky_Relu(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x, alpha):
+    def calc_Grad(self, x, alpha):
         if x<0.0:
             y = alpha
             grads = {'x' : y}
@@ -130,7 +130,7 @@ class Hard_Tanh(Diff_Func):
     def backward(self, dY):
         return dY * self.grad['x']
 
-    def local_grad(self, x):
+    def calc_Grad(self, x):
         if x <= -1.0:
             y = 0
             grads = {'x' : y}
@@ -158,7 +158,7 @@ class Softmax(Diff_Func):
 
 fn=Relu()
 
-print(fn.local_grad(-3))
-print(fn.local_grad(0))
-print(fn.local_grad(7))
-print(fn.local_grad(-2))
+print(fn.calc_Grad(-3))
+print(fn.calc_Grad(0))
+print(fn.calc_Grad(7))
+print(fn.calc_Grad(-2))
