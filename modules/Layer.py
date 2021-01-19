@@ -62,12 +62,12 @@ class Conv2D(Layer):
         scale = 2/sqrt(self.in_Channels * self.Filter_Dim[0] * self.Filter_Dim[1])
 
         # W size (F , C , W , H)
-        #self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
-        #               ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
-        self.Weights= {'W' : [[[[-0.2392, -0.0492, -0.0347],
-                             [-0.3049, -0.1630,  0.1242],
-                             [-0.2988, -0.3229,  0.1064]]]] ,
-                       'b' : [-0.0967] }
+        self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
+                       ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
+        #self.Weights= {'W' : [[[[-0.2392, -0.0492, -0.0347],
+        #                     [-0.3049, -0.1630,  0.1242],
+        #                     [-0.2988, -0.3229,  0.1064]]]] ,
+        #               'b' : [-0.0967] }
 
 
     def forward(self, X):

@@ -2,7 +2,7 @@ import numpy
 import numpy as np
 import math
 from math import exp
-#from .layers import Activation_Function
+from Diff_Func import Diff_Func
 
 
 '''Activation Functions:
@@ -13,34 +13,10 @@ from math import exp
        5. Relu
        6. Leaky Relu
        7. Hard Tanh
-                                          '''
-
-class Activation_Function:
-
-    def __init__(self, *args, **kwargs):
-        self.cache = {}
-        self.grad = {}
-
-    def __call__(self, *args, **kwargs):
-        output = self.forward(*args, **kwargs)
-        self.grad = self.local_grad(*args, **kwargs)
-
-    def forward(self, *args):
-        'Returns the Output of the activation function of the input'
-
-        pass
-
-    def backward (self, *args, **kwargs):
-        'Returns the differentiation of the activation function of the input after the Forward path'
-        pass
-   
-    def local_grad(self, *args):
-        'Returns the differentiation of the activation function of the input'
-        pass
-
+'''
 
 #Activation Function of linear or identity
-class Linear(Activation_Function):
+class Linear(Diff_Func):
     def forward(self, x):
         return x
 
@@ -54,7 +30,7 @@ class Linear(Activation_Function):
         return grads
 
 #Activation Function of Sinusoid:
-class Sin(Activation_Function):
+class Sin(Diff_Func):
     def forward(self, x):
         y = sin(x)
         return y
@@ -68,7 +44,7 @@ class Sin(Activation_Function):
         return grads
 
 #Activation Function of Tanh
-class Tanh(Activation_Function):
+class Tanh(Diff_Func):
     def forward(self, x):
         y = np.tanh(x)
         return y
@@ -82,7 +58,7 @@ class Tanh(Activation_Function):
         return grads
 
 #Activation Function of Sigmoid, Logistic, or softstep
-class Sigmoid(Activation_Function):
+class Sigmoid(Diff_Func):
     def forward(self, x):
         y = 1/(1+np.exp(-x))
         return y
@@ -97,7 +73,7 @@ class Sigmoid(Activation_Function):
         return grads
 
 #Activation Function of Relu
-class Relu(Activation_Function):
+class Relu(Diff_Func):
     def forward(self, x):
         if x<0.0:
             return 0
@@ -119,7 +95,7 @@ class Relu(Activation_Function):
 
 #Activation Function of Leaky Relu
 ######## alpha=0.01, 3 arguments ???
-class Leaky_Relu(Activation_Function):
+class Leaky_Relu(Diff_Func):
     def forward(self, x, alpha):
         if x<0.0:
                 y = x * alpha
@@ -142,7 +118,7 @@ class Leaky_Relu(Activation_Function):
 
 
 #Activation Function of Hard Tanh
-class Hard_Tanh(Activation_Function):
+class Hard_Tanh(Diff_Func):
     def forward(self, x):
         if x <= -1.0:
             return -1
@@ -169,7 +145,7 @@ class Hard_Tanh(Activation_Function):
             return grads
 
 #Activation Function of Softmax 
-class Softmax(Activation_Function):
+class Softmax(Diff_Func):
     def forward(self, x):
         exp_x = np.exp(x)
         y = exp_x / exp_x.sum(axis=0) 
