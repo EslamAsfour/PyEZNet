@@ -1,4 +1,4 @@
 *.vscode
 *.txt
 modules/__pycache__/
-
+.idea/
