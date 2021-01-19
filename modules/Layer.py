@@ -26,7 +26,7 @@ class Layer (Diff_Func):
      
     def Update_Weights(self , learningRate):
          
-        for weigh_key , weight in self.Weights.item():
+        for weight_key , weight in self.Weights.item():
             self.Weights[weight_key] = self.Weights[weight_key] - learningRate * self.Weights_Update[weight_key]
 
 
@@ -155,11 +155,10 @@ class Conv2D(Layer):
         ######################################################
         # caching the global gradients of the parameters
         self.weight_update['W'] = dW
-        self.weight_update['b'] = db
+        self.weight_update['b'] = dB
 
 
         return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
-
 
 class FullyConnectedLayer(Layer):
 
