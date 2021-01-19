@@ -12,7 +12,7 @@ class Layer (Diff_Func):
         2- Weights update dic
         3- Init weights Function
         4- Update_Weights Function    
-    '''    
+    '''
     def __init__(self, *args, **kwargs):
         # Call Diff_Func init function
         super().__init__(*args, **kwargs)
@@ -44,7 +44,7 @@ class Conv2D(Layer):
             5-  Kernal Size (Size of the Filter ex: 3x3 filter)
     """
     def __init__(self , in_Channels , out_Channels , Padding=0 , Stride=1 , Kernal_Size=3):
-        # Super Class will creat 
+        # Super Class will creat
         #    ( grad , cache , Weights , Weights_Update ) Empty local dicts
         super().__init__()
 
@@ -56,11 +56,11 @@ class Conv2D(Layer):
 
         #Based on the (Filter_Dim, in_Channels, Num_Filters) we init our weights
         self.init_Weights()
-             
-    # Generate random values in a normal distribution for ( W ) - zeros for the Bias    
+
+    # Generate random values in a normal distribution for ( W ) - zeros for the Bias
     def init_Weights(self):
         scale = 2/sqrt(self.in_Channels * self.Filter_Dim[0] * self.Filter_Dim[1])
-        
+
         # W size (F , C , W , H)
         #self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
         #               ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
@@ -68,35 +68,35 @@ class Conv2D(Layer):
                              [-0.3049, -0.1630,  0.1242],
                              [-0.2988, -0.3229,  0.1064]]]] ,
                        'b' : [-0.0967] }
-    
-    
+
+
     def forward(self, X):
         '''
-            Input : 
+            Input :
                 - X -> Batch of imgs or single img --   X.shape = (N , Ch , H , W)
             Output :
                 - Y -> Output of the Forward Prop with the current W  --  Y.shape = (N , F , H_out , W_out)
-                Note : 
-                    W_out and H_out = floor(( W_in + 2* padding - kernal_size )/ stride + 1)        
+                Note :
+                    W_out and H_out = floor(( W_in + 2* padding - kernal_size )/ stride + 1)
         '''
-        # if we have Padding we first adjust the X 
+        # if we have Padding we first adjust the X
         if self.Pad != 0:
-            #Dims always (2,3) H,W 
+            #Dims always (2,3) H,W
             X = ZeroPadding(X , self.Pad , dims=(2,3))
-            
+
         #Save input for backProp
         self.cache ={'X' : X}
-        
+
         N , Ch , H , W = X.shape
-        
+
         Filter_H , Filter_W = self.Filter_Dim
-        
-        # Note : Padding Already Added from the Function Above so we dont need to add it here 
+
+        # Note : Padding Already Added from the Function Above so we dont need to add it here
         W_out = int(((W - Filter_W )/self.Stride) + 1)
         H_out = int(((H - Filter_H )/self.Stride) + 1)
-        
+
         Y = np.zeros(shape=(N , self.Num_Filters , H_out ,W_out ))
-        
+
         #loop over every Img
         for n in range(N):
             #Loop over every filter
@@ -107,8 +107,8 @@ class Conv2D(Layer):
                     # Subset from X for the filter size
                     # Select [ one img (n)  , All the Ch , Offset+ Filter_h , Offset+Filter_W ]
                     Sub_X = X[n , : , H_offset: (H_offset + Filter_H) , W_offset: (W_offset + Filter_W)  ]
-                    
-                    Y[n , C_out , h , w ] = np.sum(self.Weights['W'][C_out] * Sub_X) + self.Weights['b'][C_out]     
+
+                    Y[n , C_out , h , w ] = np.sum(self.Weights['W'][C_out] * Sub_X) + self.Weights['b'][C_out]
         return Y
     def backward(self , dY):
         '''
@@ -116,15 +116,15 @@ class Conv2D(Layer):
                 1- dW/dL    -> Conv(X , dY/dl)
                 2- dB/dL        Conv(X , dY/dl)
                 3- dX/dL
-        ''' 
+        '''
         # Load X from the cache
         X = self.cache['X']
         # dX same shape as X
         dX = np.zeros_like(X)
         N ,CH ,H ,W = X.shape
-        
+
         Filter_H , Filter_W = self.Filter_Dim
-        
+
         # Calc dX
         #Loop Over every img
         for n in range(N):
@@ -135,10 +135,10 @@ class Conv2D(Layer):
                     H_offset , W_offset = h*self.Stride , w*self.Stride
                     #                                                                                          filter index
                     dX[n,C_out, H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.Weights['W'][C_out] * dY[n,C_out,h,w]
-                    
+
         # Calc dW
         dW = np.zeros_like(self.Weights['W'])
-        
+
         # Loop over filters
         for c_w in range(self.Num_Filters):
             for c_i in range(self.in_Channels):
@@ -148,7 +148,7 @@ class Conv2D(Layer):
                     dY_rec_field = dY[:, c_w]
                     dW[c_w, c_i, h ,w] = np.sum(Sub_X*dY_rec_field)
                     ##################################################### #####################################################
-                        
+
         # Calc dB
         ######################### Msh Fahmm #############################
         dB = np.sum(dY, axis=(0, 2, 3)).reshape(-1, 1)
@@ -156,15 +156,61 @@ class Conv2D(Layer):
         # caching the global gradients of the parameters
         self.weight_update['W'] = dW
         self.weight_update['b'] = db
-        
-        
+
+
         return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
-        
-        
-        
-        
-       
-    
-        
-    
-    
+
+
+class FullyConnectedLayer(Layer):
+
+     def __init__self(self,input_dim,output_dim):
+         self().__init__()      #inheret initial function from our parent class 'Layer'
+         self._init_weights(input_dim,output_dim)
+         self.cache = {}
+         self.weight_update = {}
+
+     def _init_weights(self,input_dim,output_dim):
+         scale = 1/ sqrt(input_dim)
+         #input_dim= rows , output_dim = columns
+         self.weights['W'] = scale *np.random.randn(input_dim,output_dim)
+         # 1 = rows , output_dim = columns
+         self.weights['b'] = scale *np.random.randn(1,output_dim)
+
+
+     def Forward(self,X):
+
+    # forwar function take X 'vector of numpy array' where it's size is (no_of_batch,input_dim)
+    # and it's output is Y = (WX+b)
+        output=np.dot(X,self.Weights['W']) + self.Weights['b']
+    #cashe it's like a dictionary to save the answer of a frequent qeustions
+        self.cache['X']=X
+        self.cache['output']=output
+        return output
+
+     def Backword(self,dY):
+    # Our goal with backpropagation is to update each of the weights in the network
+    # so that they cause the actual output to be closer the target output using 'Chain Rule'
+        dX=dY.dot(self.grad['X'].T)
+    # dY is output array of size (rows= no-of_batches, colomns = no_of_out)
+    # calculate golbal gradient to be used in backpropagation
+
+        X=self.cache['X']
+        dw=self.grad(['W']).T.dot(dY)
+    # calculating the global gradient wrt to weight
+        db=np.sum(dY,axis=0,keepdims=True)
+    # keepdims=True means that the result will broadcast correctly against the input array.
+    # axis=0 means will sum all of the elements of the input array.
+    # dY is the elements to sum
+        self.weight_update={'W':dw,['b']:db}
+        return dX
+
+
+     def grad(self,X):
+
+         gradX_local = self.weight['W'] #weight hena gaya mn class function el kber el lsa hyt3mlo implementation
+         gradW_local= X
+         gradb_local = np.ones_like(self.weight['b'])
+         grads = {'X': gradX_local, 'W': gradW_local, 'b': gradb_local}
+         return grads
+
+
