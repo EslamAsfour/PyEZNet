@@ -1,5 +1,7 @@
 import numpy as np
-from Diff_Func import Diff_Func
+from modules.Diff_Func import Diff_Func
+
+
 class Loss(Diff_Func):
     """
         Abstract Class to represent the Construction of the Loss Functions
@@ -53,9 +55,6 @@ class Cross_Entropy_Loss(Loss):
             return np.sum(loss_array)
         elif (total_loss =="median"):
             return np.median(loss_array)
-
-
-
 
     def calc_Grad(self, X, Y):
         #X:is np array with shape (patch,dimen)
@@ -126,10 +125,3 @@ class MeanSquareLoss(Loss):
         return grad
 
 
-#Test Case for MSE
-u = [[1, 2, 3, 4], [3, 2, 1, 3], [2, 9, 2, 3]]
-v = [[2, 1, 3, 4], [2, 3, 4, 3], [3, 2, 5, 1]]
-X = np.array(u)
-Y = np.array(v)
-mse = MeanSquareLoss().forward(X, Y)
-print(mse)

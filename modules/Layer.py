@@ -26,7 +26,7 @@ class Layer (Diff_Func):
      
     def Update_Weights(self , learningRate):
          
-        for weight_key , weight in self.weights.item():
+        for weight_key , weight in self.weights.items():
             self.weights[weight_key] = self.weights[weight_key] - learningRate * self.weights_Update[weight_key]
 
 class MaxPool2D(Diff_Func):
@@ -209,8 +209,8 @@ class Conv2D(Layer):
 class FullyConnectedLayer(Layer):
 
      def __init__(self,input_dim,output_dim):
-         self().__init__()      #inheret initial function from our parent class 'Layer'
-         self._init_weights(input_dim,output_dim)
+         super().__init__()      #inheret initial function from our parent class 'Layer'
+         self._init_Weights(input_dim,output_dim)
 
 
      def _init_Weights(self,input_dim,output_dim):
@@ -239,13 +239,14 @@ class FullyConnectedLayer(Layer):
     # calculate golbal gradient to be used in backpropagation
 
         X=self.cache['X']
-        dw=self.grad(['W']).T.dot(dY)
+        dw=self.grad['W'].T.dot(dY)
+        
     # calculating the global gradient wrt to weight
         db=np.sum(dY,axis=0,keepdims=True)
     # keepdims=True means that the result will broadcast correctly against the input array.
     # axis=0 means will sum all of the elements of the input array.
     # dY is the elements to sum
-        self.weights_update={'W':dw,['b']:db}
+        self.weights_Update={'W': dw,'b': db}
         return dX
 
 

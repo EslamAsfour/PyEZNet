@@ -2,7 +2,7 @@ import numpy
 import numpy as np
 import math
 from math import exp
-from Diff_Func import Diff_Func
+from modules.Diff_Func import Diff_Func
 
 
 '''Activation Functions:
@@ -75,23 +75,15 @@ class Sigmoid(Diff_Func):
 #Activation Function of Relu
 class Relu(Diff_Func):
     def forward(self, x):
-        if x<0.0:
-            return 0
-        else:
-            return x
+        return x*(x > 0)
     
     def backward(self, dY):
-        return dY * self.grad['x']
+        return dY * self.grad['X']
 
     def calc_Grad(self, x):
-        if x<0.0:
-            y =0
-            grads = {'x' : y}
-            return grads
-        else:
-            y = 1
-            grads = {'x' : y}
-            return grads
+        
+        grads = {'X': 1*(x > 0)}
+        return grads
 
 #Activation Function of Leaky Relu
 ######## alpha=0.01, 3 arguments ???
@@ -156,9 +148,3 @@ class Softmax(Diff_Func):
 
 
 
-fn=Relu()
-
-print(fn.calc_Grad(-3))
-print(fn.calc_Grad(0))
-print(fn.calc_Grad(7))
-print(fn.calc_Grad(-2))

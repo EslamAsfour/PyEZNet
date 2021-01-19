@@ -1,7 +1,7 @@
-from  import Loss
-from Diff_Func import Diff_Func
-from Layer import Layer
-from LOSS_FUNC import Loss
+from modules.LOSS_FUNC import Loss
+from modules.Diff_Func import Diff_Func
+from modules.Layer import Layer
+
 
 class Net:
     #memory optimization for storage
@@ -53,7 +53,7 @@ class Net:
         '''
         back=self.loss_function.backward()
         for layer in reversed(self.layers):
-            back=layer.backward()
+            back=layer.backward(back)
         return back
 
 
@@ -65,4 +65,4 @@ class Net:
         '''
         for layer in self.layers:
             if isinstance(layer,Layer):
-                layer._update_weights(alpha)
+                layer.Update_Weights(alpha)
