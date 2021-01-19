@@ -1,18 +1,18 @@
-from Diff_Fun import Diff_Func
+from modules.Diff_Func import Diff_Func
 import numpy as np
 from math import sqrt
 from itertools import product
-from utils import ZeroPadding
+from modules.utils import ZeroPadding
 
 
 class Layer (Diff_Func):
-"""
+    '''
     Abstract Class to represent Layers so we added 
         1- Weights dic
         2- Weights update dic
         3- Init weights Function
         4- Update_Weights Function    
-"""    
+    '''    
     def __init__(self, *args, **kwargs):
         # Call Diff_Func init function
         super().__init__(*args, **kwargs)
@@ -21,12 +21,12 @@ class Layer (Diff_Func):
         self.Weights_Update = {}
         
      # Function to initalize weights   
-     def init_Weights(self , *args, **kwargs):
+    def init_Weights(self , *args, **kwargs):
          pass
      
-     def Update_Weights(self , learningRate):
+    def Update_Weights(self , learningRate):
          
-         for weigh_key , weight in self.Weights.item()
+        for weigh_key , weight in self.Weights.item():
             self.Weights[weight_key] = self.Weights[weight_key] - learningRate * self.Weights_Update[weight_key]
 
 
@@ -52,20 +52,22 @@ class Conv2D(Layer):
         self.Num_Filters = out_Channels
         self.Pad = Padding
         self.Stride = Stride
-        self.Filter_Dim = Kernal_Size
+        self.Filter_Dim = (Kernal_Size,Kernal_Size)
 
         #Based on the (Filter_Dim, in_Channels, Num_Filters) we init our weights
         self.init_Weights()
-        
-        
-        
+             
     # Generate random values in a normal distribution for ( W ) - zeros for the Bias    
     def init_Weights(self):
         scale = 2/sqrt(self.in_Channels * self.Filter_Dim[0] * self.Filter_Dim[1])
         
         # W size (F , C , W , H)
-        self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ) )
-                       'b' : np.zeros(shape= (self.Num_Filters , 1)) }
+        #self.Weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
+        #               ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
+        self.Weights= {'W' : [[[[-0.2392, -0.0492, -0.0347],
+                             [-0.3049, -0.1630,  0.1242],
+                             [-0.2988, -0.3229,  0.1064]]]] ,
+                       'b' : [-0.0967] }
     
     
     def forward(self, X):
@@ -90,8 +92,8 @@ class Conv2D(Layer):
         Filter_H , Filter_W = self.Filter_Dim
         
         # Note : Padding Already Added from the Function Above so we dont need to add it here 
-        W_out = ((W - Filter_W )/self.Stride) + 1
-        H_out = ((H - Filter_H )/self.Stride) + 1
+        W_out = int(((W - Filter_W )/self.Stride) + 1)
+        H_out = int(((H - Filter_H )/self.Stride) + 1)
         
         Y = np.zeros(shape=(N , self.Num_Filters , H_out ,W_out ))
         
@@ -106,19 +108,15 @@ class Conv2D(Layer):
                     # Select [ one img (n)  , All the Ch , Offset+ Filter_h , Offset+Filter_W ]
                     Sub_X = X[n , : , H_offset: (H_offset + Filter_H) , W_offset: (W_offset + Filter_W)  ]
                     
-                    Y[n , C_out , h , w ] = np.sum(self.Weights['W'][C_out] * Sub_X) + self.Weights['B'][C_out] 
-                    
-        
+                    Y[n , C_out , h , w ] = np.sum(self.Weights['W'][C_out] * Sub_X) + self.Weights['b'][C_out]     
         return Y
-                    
-            
     def backward(self , dY):
-    '''
-        The Goal is to calc :
-            1- dW/dL    -> Conv(X , dY/dl)
-            2- dB/dL        Conv(X , dY/dl)
-            3- dX/dL
-    '''
+        '''
+            The Goal is to calc :
+                1- dW/dL    -> Conv(X , dY/dl)
+                2- dB/dL        Conv(X , dY/dl)
+                3- dX/dL
+        ''' 
         # Load X from the cache
         X = self.cache['X']
         # dX same shape as X
@@ -149,7 +147,7 @@ class Conv2D(Layer):
                     Sub_X = X[: , c_i , h:H-Filter_H+h+1:self.stride  , w: W-Filter_W+w+1:self.stride ]
                     dY_rec_field = dY[:, c_w]
                     dW[c_w, c_i, h ,w] = np.sum(Sub_X*dY_rec_field)
-                        ##################################################### #####################################################
+                    ##################################################### #####################################################
                         
         # Calc dB
         ######################### Msh Fahmm #############################

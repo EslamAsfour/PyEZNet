@@ -9,7 +9,13 @@ def ZeroPadding(X ,pad_Width ,dims):
     
     #if dims == (2,3)
     #   pad =[(0,0)(0,0)(P_D,P_D)(P_D,P_D)]
-    pad = [(0, 0) if idx not in dims else (pad_width, pad_width) for idx in range(len(X.shape))]
+    pad = []
+    for idx in range(len(X.shape)):
+        if idx not in dims:
+            pad.append((0,0))
+        else :
+            pad.append((pad_Width,pad_Width))
+        
     X_padded = np.pad(X, pad, 'constant')
     
     return X_padded
