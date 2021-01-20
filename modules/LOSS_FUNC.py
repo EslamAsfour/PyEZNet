@@ -60,13 +60,22 @@ class Cross_Entropy_Loss(Loss):
         #X:is np array with shape (patch,dimen)
         #Y:is np array with shape (patch,1)
         #value of Y in every patch is the truth ground dimension.
+        '''
         probs=self.cache['probs']
-        temp_grad=probs
+        temp_grad= probs
         for i in range (Y.size):
             temp_grad[i,Y[i]]-=1
         grad={}
         grad['X']=temp_grad
         return grad
+        '''
+        probs = self.cache['probs']
+        ones = np.zeros_like(probs)
+        for row_idx, col_idx in enumerate(Y):
+            ones[row_idx, col_idx] = 1.0
+
+        grads = {'X': (probs - ones)/float(len(X))}
+        return grads
 
 
     @staticmethod
