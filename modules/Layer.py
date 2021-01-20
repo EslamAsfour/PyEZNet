@@ -78,7 +78,7 @@ class MaxPool2D(Diff_Func):
         return self.grad   
 
 
-class AvePool2D(Function):
+class AvePool2D(Diff_Func):
     ###############################################################################
     #
     # Class: AvaragePool2D
