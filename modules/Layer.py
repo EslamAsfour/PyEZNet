@@ -30,16 +30,16 @@ class Layer (Diff_Func):
             self.weights[weight_key] = self.weights[weight_key] - learningRate * self.weights_Update[weight_key]
 
 class MaxPool2D(Diff_Func):
-###############################################################################
-#
-# Class: MaxPool2D
-#
-# File Name: layer.py
-#
-# Description: class for the maximum pooling layer.
-# 
-# Author: Ahmed Gamal
-################################################################################
+    ###############################################################################
+    #
+    # Class: MaxPool2D
+    #
+    # File Name: layer.py
+    #
+    # Description: class for the maximum pooling layer.
+    # 
+    # Author: Ahmed Gamal
+    ################################################################################
     def __init__(self, kernel_size=(2, 2)):
         super().__init__()
         self.kernel_size = (kernel_size, kernel_size) if isinstance(kernel_size, int) else kernel_size
@@ -259,3 +259,14 @@ class FullyConnectedLayer(Layer):
          return grads
 
 
+
+class Flatten(Function):
+    def forward(self, X):
+        # Save original size of the input
+        self.cache['shape'] = X.shape
+        # Get number of imgs 
+        n_batch = X.shape[0]
+        return X.reshape(n_batch, -1)
+
+    def backward(self, dY):
+        return dY.reshape(self.cache['shape'])
