@@ -77,6 +77,55 @@ class MaxPool2D(Diff_Func):
         # grad dictionary
         return self.grad   
 
+
+class AvePool2D(Function):
+    ###############################################################################
+    #
+    # Class: AvaragePool2D
+    #
+    # File Name: layer.py
+    #
+    # Description: class for the avarage pooling layer.
+    # 
+    # Author: Dalia Ayman
+    ################################################################################
+    def __init__(self, kernel_size=(2, 2)):
+        super().__init__()
+        self.kernel_size = (kernel_size, kernel_size) if isinstance(kernel_size, int) else kernel_size
+        #isinstance ->  check if the kernel size is int number 
+    def __call__(self, X):
+        # in contrary to other Function subclasses, MaxPool2D does not need to call
+        # .local_grad() after forward pass because the gradient is calculated during it
+        return self.forward(X)
+    def forward(self, X):
+        N, C, H, W = X.shape
+        KH, KW = self.kernel_size
+
+        grad = np.zeros_like(X)
+        Y = np.zeros((N, C, H//KH, W//KW)) #h/kh -> hight of the new matrix ,, w/kw -> width of the new matrix
+
+        for h, w in product(range(0, H//KH), range(0, W//KW)):
+            h_offset, w_offset = h*KH, w*KW
+            rec_field = X[:, :, h_offset:h_offset+KH, w_offset:w_offset+KW] # get the part of matrix that we will find it max 
+            Y[:, :, h, w] = np.average(rec_field, axis=(2, 3)) #find the max in the part of matrix
+            for kh, kw in product(range(KH), range(KW)):
+                grad[:, :, h_offset+kh, w_offset+kw] = (X[:, :, h_offset+kh, w_offset+kw] >= Y[:, :, h, w])
+
+        # storing the gradient
+        self.grad['X'] = grad
+
+        return Y
+def backward(self, dY):
+        dY = np.repeat(np.repeat(dY, repeats=self.kernel_size[0], axis=2),
+                       repeats=self.kernel_size[1], axis=3)
+        return self.grad['X']*dY
+
+def local_grad(self, X):
+        # small hack: because for MaxPool calculating the gradient is simpler during
+        # the forward pass, it is calculated there and this function just returns the
+        # grad dictionary
+        return self.grad   
+
 class Conv2D(Layer):
     """
         Conv2D Takes input img (Channel , Width , Height)  with N imgs -> (N , Ch , H , W)
