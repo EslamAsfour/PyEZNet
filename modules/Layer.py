@@ -180,7 +180,8 @@ class Conv2D(Layer):
                 for h,w in product(range(dY.shape[2]),range(dY.shape[3])):
                     H_offset , W_offset = h*self.Stride , w*self.Stride
                     #                                                                                          filter index
-                    dX[n,C_out, H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.weights['W'][C_out] * dY[n,C_out,h,w]
+                    dX[n,: , H_offset:H_offset + Filter_H , W_offset:W_offset + Filter_W ] += self.weights['W'][C_out] * dY[n,C_out,h,w]
+
 
         # Calc dW
         dW = np.zeros_like(self.weights['W'])
@@ -190,7 +191,7 @@ class Conv2D(Layer):
             for c_i in range(self.in_Channels):
                 for h,w in product(range(Filter_H),range(Filter_W)):
                     ######################################################## Msh fahm #####################################################
-                    Sub_X = X[: , c_i , h:H-Filter_H+h+1:self.stride  , w: W-Filter_W+w+1:self.stride ]
+                    Sub_X = X[: , c_i , h:H-Filter_H+h+1:self.Stride  , w: W-Filter_W+w+1:self.Stride ]
                     dY_rec_field = dY[:, c_w]
                     dW[c_w, c_i, h ,w] = np.sum(Sub_X*dY_rec_field)
                     ##################################################### #####################################################
@@ -204,7 +205,7 @@ class Conv2D(Layer):
         self.weights_Update['b'] = dB
 
 
-        return dX[:, :, self.padding:-self.padding, self.padding:-self.padding]
+        return dX[:, :, self.Pad:-self.Pad, self.Pad:-self.Pad]
 
 class FullyConnectedLayer(Layer):
 
@@ -260,7 +261,7 @@ class FullyConnectedLayer(Layer):
 
 
 
-class Flatten(Function):
+class Flatten(Diff_Func):
     def forward(self, X):
         # Save original size of the input
         self.cache['shape'] = X.shape

@@ -9,6 +9,7 @@ from modules.Untracked import BatchNorm2D
 
 from keras.datasets import mnist
 
+np.random.seed(1)
 
 
 net = Net(layers=[Conv2D(1, 4, Kernal_Size= 3, Padding=1), MaxPool2D(kernel_size=2), Relu(), BatchNorm2D(4),
@@ -32,5 +33,5 @@ for epoch_idx in range(n_epochs):
     accuracy = 100*(preds == y_train[batch_idx]).sum() / n_batch
     loss = net.loss(out, y_train[batch_idx])
     net.backward()
-    net.update_weights(lr=0.01)
+    net.weights_update(alpha=0.01)
     print("Epoch no. %d loss =  %2f4 \t accuracy = %d %%" % (epoch_idx + 1, loss, accuracy))
