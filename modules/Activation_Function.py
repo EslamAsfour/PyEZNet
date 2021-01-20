@@ -176,13 +176,25 @@ class Softmax(Activation_Function):
         
         return y
 
+    def backward(self, dY):
+        return dY * self.grad['x']
+
+
+    def local_grad(self, x):
+        exp_x = np.exp(x)
+        y = exp_x / exp_x.sum(axis=0) 
+        # Reshape the 1-d softmax to 2-d so that np.dot will do the matrix multiplication
+        s = y.reshape(-1,1)
+        gradient=np.diagflat(s) - np.dot(s, s.T)
+        grads={'x': gradient}
+        return grads
 
 
 
 
-fn=Relu()
 
-print(fn.local_grad(-3))
-print(fn.local_grad(0))
-print(fn.local_grad(7))
-print(fn.local_grad(-2))
+
+
+
+
+
