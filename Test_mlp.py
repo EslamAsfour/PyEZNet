@@ -1,7 +1,7 @@
 import numpy as np
 
 from modules.Layer import *
-from modules.LOSS_FUNC import MeanSquareLoss
+from modules.LOSS_FUNC import Cross_Entropy_Loss
 from modules.Activation_Function import Relu,Softmax
 from modules.Net import Net
 # functions for visualization
@@ -22,7 +22,7 @@ X = np.concatenate((X1, X2))
 Y_labels = np.array([0]*n_class_size + [1]*n_class_size)
 
 net = Net(layers=[FullyConnectedLayer(2, 4), Relu(), FullyConnectedLayer(4, 2)],
-          loss=MeanSquareLoss())
+          loss=Cross_Entropy_Loss())
 
 print(net)
 n_epochs = 1000
