@@ -4,18 +4,13 @@ from modules.Layer import *
 from modules.LOSS_FUNC import Cross_Entropy_Loss
 from modules.Activation_Function import Relu,Softmax
 from modules.Net import Net
+from modules.PreProcessing_data import GetData
 
 
 # Load Data
 
 from keras.datasets import mnist
-
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-# reshaping
-X_train, X_test = X_train.reshape(-1, 1, 28, 28), X_test.reshape(-1, 1, 28, 28)
-y_train, y_test = y_train.reshape(-1, 1), y_test.reshape(-1, 1)
-# normalizing and scaling data
-X_train, X_test = X_train.astype('float32')/255, X_test.astype('float32')/255
+X_train,y_train,X_test, y_test = GetData()
 
 LeNet = Net(layers=[
                     Conv2D(in_Channels= 1,out_Channels = 6, Kernal_Size= 5, Padding=2  ,Stride= 1),
