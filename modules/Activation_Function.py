@@ -138,12 +138,48 @@ class Hard_Tanh(Diff_Func):
 
 #Activation Function of Softmax 
 class Softmax(Diff_Func):
+    
+    def forward(self, x):
+        out = np.zeros(shape=(32,10))
+        x -= np.max(x)
+        for i in range(x.shape[0]):
+            out[i] = (np.exp(x[i]).T / np.sum(np.exp(x[i]), axis=0)).T
+        self.y = out
+        return self.y
+    
+
+    def backward(self, dY):
+        grad = np.zeros(shape=(1,10))
+        out = np.zeros(shape=(32,10))
+        for i in range(dY.shape[0]):
+            s = self.y[i].reshape(-1, 1)
+            grad = np.diagflat(s) - np.dot(s, s.T)
+            out[i] = np.dot(grad  , dY[i])
+            
+        return out
+
+    def local_grad(self, x):
+        pass
+    '''
     def forward(self, x):
         exp_x = np.exp(x)
         y = exp_x / exp_x.sum(axis=0) 
         
         return y
 
+    def backward(self, dY):
+        return dY * self.grad['x']
+
+
+    def local_grad(self, x):
+        exp_x = np.exp(x)
+        y = exp_x / exp_x.sum(axis=0) 
+        # Reshape the 1-d softmax to 2-d so that np.dot will do the matrix multiplication
+        s = y.reshape(-1,1)
+        gradient=np.diagflat(s) - np.dot(s, s.T)
+        grads={'x': gradient}
+        return grads
+    '''
 
 
 

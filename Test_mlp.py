@@ -1,5 +1,4 @@
 import numpy as np
-
 from modules.Layer import *
 from modules.LOSS_FUNC import Cross_Entropy_Loss
 from modules.Activation_Function import Relu,Softmax
@@ -24,9 +23,17 @@ Y_labels = np.array([0]*n_class_size + [1]*n_class_size)
 net = Net(layers=[FullyConnectedLayer(2, 4), Relu(), FullyConnectedLayer(4, 2)],
           loss=Cross_Entropy_Loss())
 
+
 print(net)
-n_epochs = 1000
+n_epochs = 100
+
+file = open('example.txt','w+')
+file.close()
+
 for epoch_idx in range(n_epochs):
+
+    file = open('example.txt','a+')
+
     print("Epoch no. %d" % epoch_idx)
     out = net(X)
     print(out)
@@ -35,7 +42,15 @@ for epoch_idx in range(n_epochs):
     print("accuracy: %1.4f" % (1 - np.abs(pred - Y_labels).sum()/200))
     loss = net.loss(out, Y_labels)
     print('loss: %1.4f' % loss)
+
+    file.write("%1.0f,"% epoch_idx)
+    file.write("%1.4f"% loss)
+    file.write("\n")
+    #file.close()
+
     grad = net.backward()
     net.weights_update(0.1)
-    
+
+
+  
        

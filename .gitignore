@@ -4,3 +4,11 @@ modules/__pycache__/
 .idea/
 /modules/Untracked.py
 Diagrams-Docs/Lenet_Arch.pdf
+TestSoftmax.py
+*.csv
+
+
+
+
+
+ 
