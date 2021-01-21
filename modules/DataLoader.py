@@ -8,6 +8,7 @@ import numpy as np
 from urllib.request import urlretrieve
 import sys
 
+
 #from: https://github.com/datapythonista/mnist
 DATASET_DIRECTORY = 'data/'
 URL = 'http://yann.lecun.com/exdb/mnist/'
