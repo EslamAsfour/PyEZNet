@@ -253,7 +253,8 @@ class Conv2D(Layer):
         self.weights_Update['W'] = dW
         self.weights_Update['b'] = dB
 
-
+        if self.Pad == 0:
+            return dX
         return dX[:, :, self.Pad:-self.Pad, self.Pad:-self.Pad]
 
 class FullyConnectedLayer(Layer):
