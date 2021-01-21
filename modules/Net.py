@@ -1,5 +1,7 @@
-# from .losses import Loss
-#from .layers import Function , Layer
+from modules.LOSS_FUNC import Loss
+from modules.Diff_Func import Diff_Func
+from modules.Layer import Layer
+
 
 class Net:
     #memory optimization for storage
@@ -10,7 +12,7 @@ class Net:
     def __init__(self,layers,loss):
         assert isinstance(loss,Loss) #the loss function must be as instance of nn.losses.Loss
         for layer in layers:
-            assert isinstance(layer,Function)
+            assert isinstance(layer,Diff_Func)
             #layer must be instance of nn.layers.Layer or nn.layers.Function
 
         self.layers=layers
@@ -51,7 +53,7 @@ class Net:
         '''
         back=self.loss_function.backward()
         for layer in reversed(self.layers):
-            back=layer.backward()
+            back=layer.backward(back)
         return back
 
 
@@ -63,4 +65,4 @@ class Net:
         '''
         for layer in self.layers:
             if isinstance(layer,Layer):
-                layer._update_weights(alpha)
+                layer.Update_Weights(alpha)
