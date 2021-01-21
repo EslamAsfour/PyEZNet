@@ -66,3 +66,36 @@ class Net:
         for layer in self.layers:
             if isinstance(layer,Layer):
                 layer.Update_Weights(alpha)
+
+
+
+
+
+
+
+    def save_weights(self):
+        i=0
+        for layer in self.layers:
+
+            if isinstance(layer,Conv2) or isinstance(layer,FullyConnectedLayer):
+
+                np.save( 'layer'+str(i)+'.npy' , layer.weights ) 
+
+            i+=1
+            
+  
+
+
+
+
+
+    def load_weights(self):
+
+        i=0
+        for layer in self.layers:
+            if isinstance(layer,Conv2) or isinstance(layer,FullyConnectedLayer):
+
+                layer.weights=np.load( 'layer'+str(i)+'.npy' )
+            
+            i+=1
+
