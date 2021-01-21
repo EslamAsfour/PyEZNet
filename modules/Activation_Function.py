@@ -140,14 +140,25 @@ class Hard_Tanh(Diff_Func):
 class Softmax(Diff_Func):
     
     def forward(self, x):
-        exp_x = np.exp(x)
-        self.data = exp_x / np.sum(exp_x, axis=1, keepdims=True)
-        return self.data
+        out = np.zeros(shape=(32,10))
+        x -= np.max(x)
+        for i in range(x.shape[0]):
+            out[i] = (np.exp(x[i]).T / np.sum(np.exp(x[i]), axis=0)).T
+        self.y = out
+        return self.y
+    
 
     def backward(self, dY):
-        return (self.data - np.power( self.data,2)) * dY
+        grad = np.zeros(shape=(1,10))
+        out = np.zeros(shape=(32,10))
+        for i in range(dY.shape[0]):
+            s = self.y[i].reshape(-1, 1)
+            grad = np.diagflat(s) - np.dot(s, s.T)
+            out[i] = np.dot(grad  , dY[i])
+            
+        return out
 
-    def local_grad(self, X):
+    def local_grad(self, x):
         pass
     '''
     def forward(self, x):

@@ -33,8 +33,17 @@ LeNet = Net(layers=[
                     Softmax()], loss=Cross_Entropy_Loss())
 
 n_epoch = 10
-batch_size = 100
+batch_size = 32
 
+print(X_train )
+print("-------------------------------------")
+print(y_train )
+print("-------------------------------------")
+print(X_test )
+
+print("-------------------------------------")
+print( y_test )
+print("-------------------------------------")
 
 for e in range(n_epoch):
     
