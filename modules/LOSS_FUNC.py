@@ -39,7 +39,7 @@ class Loss(Diff_Func):
 class Cross_Entropy_Loss(Loss):
 
 
-    def forward(self, X, Y,total_loss="average"):
+    def forward(self, X, Y,total_loss="mean"):
         #X:is np array with shape (patch,dimen)
         #Y:is np array with shape (patch,1)
         #value of Y in every patch is the truth ground dimension.
@@ -49,12 +49,15 @@ class Cross_Entropy_Loss(Loss):
         for i in range (Y.size):
             #calculating the loss of every patch,prob. of the corresponding ground truth only as all other values will be *(0)
             loss_array[i]= -(np.log(X_probs[i,Y[i]]))
-        if(total_loss=="average"):
-            return np.average(loss_array)
+        if(total_loss=="mean"):
+            return np.mean(loss_array)
         elif (total_loss=="sum"):
             return np.sum(loss_array)
         elif (total_loss =="median"):
             return np.median(loss_array)
+
+
+
 
     def calc_Grad(self, X, Y):
         #X:is np array with shape (patch,dimen)

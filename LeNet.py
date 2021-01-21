@@ -30,7 +30,7 @@ LeNet = Net(layers=[
                     FullyConnectedLayer(input_dim= 120,output_dim=84),
                     Relu(),
                     FullyConnectedLayer(input_dim=84,output_dim=10),
-                    Softmax()], loss=Cross_Entropy_Loss())
+                    ], loss=Cross_Entropy_Loss())
 
 n_epoch = 10
 batch_size = 32
@@ -40,7 +40,6 @@ print("-------------------------------------")
 print(y_train )
 print("-------------------------------------")
 print(X_test )
-
 print("-------------------------------------")
 print( y_test )
 print("-------------------------------------")
