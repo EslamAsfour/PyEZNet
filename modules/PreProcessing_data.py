@@ -1,6 +1,7 @@
 import numpy as np
 import DataLoader
 
+
 print('Loadind data......')
 num_classes = 10
 train_images = DataLoader.train_images() #[60000, 28, 28]
