@@ -159,6 +159,8 @@ class Conv2D(Layer):
         # W size (F , C , W , H)
         self.weights= {'W' : np.random.normal(scale= scale , size= (self.Num_Filters , self.in_Channels ,self.Filter_Dim[0] ,self.Filter_Dim[1] ))
                        ,'b' : np.zeros(shape= (self.Num_Filters , 1)) }
+        print(self.weights)
+        print("--------------------------")
         #self.Weights= {'W' : [[[[-0.2392, -0.0492, -0.0347],
         #                     [-0.3049, -0.1630,  0.1242],
         #                     [-0.2988, -0.3229,  0.1064]]]] ,
@@ -270,6 +272,8 @@ class FullyConnectedLayer(Layer):
          self.weights['W'] = scale *np.random.randn(input_dim,output_dim)
          # 1 = rows , output_dim = columns
          self.weights['b'] = scale *np.random.randn(1,output_dim)
+         print(self.weights)
+         print("----------------------------")
 
 
      def forward(self,X):

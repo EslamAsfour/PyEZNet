@@ -9,7 +9,6 @@ from modules.PreProcessing_data import GetData
 
 # Load Data
 
-from keras.datasets import mnist
 X_train,y_train,X_test, y_test = GetData()
 
 LeNet = Net(layers=[
@@ -27,17 +26,13 @@ LeNet = Net(layers=[
                     FullyConnectedLayer(input_dim=84,output_dim=10),
                     ], loss=Cross_Entropy_Loss())
 
+LeNet.save_weights()
+
+LeNet.load_weights()
+
 n_epoch = 10
 batch_size = 32
 
-print(X_train )
-print("-------------------------------------")
-print(y_train )
-print("-------------------------------------")
-print(X_test )
-print("-------------------------------------")
-print( y_test )
-print("-------------------------------------")
 
 for e in range(n_epoch):
     
