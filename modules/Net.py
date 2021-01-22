@@ -68,15 +68,16 @@ class Net:
         for layer in self.layers:
             if isinstance(layer,Layer):
                 layer.Update_Weights(alpha)
-    def save_weights(self):
+    def save_weights(self,epoch,patch):
         i=0
+        file_name = "Logs/Weights_("+ str(epoch) + ")_(" + str(patch) + ").pkl"
         obj = []
         for l in self.layers:
             if isinstance(l,Layer):
                 cache = l.weights
                 obj.append(cache)
             i+=1
-        with open('weights.pkl', 'wb') as handle:
+        with open(file_name, 'wb') as handle:
             pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
             i+=1
