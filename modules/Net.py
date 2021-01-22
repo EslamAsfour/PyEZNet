@@ -1,6 +1,8 @@
 from modules.LOSS_FUNC import Loss
 from modules.Diff_Func import Diff_Func
 from modules.Layer import Layer
+import numpy as np
+import pickle
 
 
 class Net:
@@ -66,3 +68,28 @@ class Net:
         for layer in self.layers:
             if isinstance(layer,Layer):
                 layer.Update_Weights(alpha)
+    def save_weights(self,epoch,patch):
+        i=0
+        file_name = "Logs/Weights_("+ str(epoch) + ")_(" + str(patch) + ").pkl"
+        obj = []
+        for l in self.layers:
+            if isinstance(l,Layer):
+                cache = l.weights
+                obj.append(cache)
+            i+=1
+        with open(file_name, 'wb') as handle:
+            pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+            i+=1
+    def load_weights(self,path):
+        
+        with open(path, 'rb') as f:
+            dic = pickle.load(f)
+
+        i=0
+        for l in self.layers:
+            if isinstance(l,Layer) :
+                l.weights['W'] = dic[i]['W'] 
+                l.weights['b'] = dic[i]['b']
+                i+=1
+                

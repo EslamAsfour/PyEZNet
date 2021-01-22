@@ -270,6 +270,7 @@ class FullyConnectedLayer(Layer):
          self.weights['W'] = scale *np.random.randn(input_dim,output_dim)
          # 1 = rows , output_dim = columns
          self.weights['b'] = scale *np.random.randn(1,output_dim)
+         
 
 
      def forward(self,X):

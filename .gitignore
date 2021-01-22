@@ -6,7 +6,8 @@ modules/__pycache__/
 Diagrams-Docs/Lenet_Arch.pdf
 TestSoftmax.py
 *.csv
-
+data
+*.pkl
 
 
 
