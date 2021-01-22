@@ -81,9 +81,9 @@ class Net:
             pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
             i+=1
-    def load_weights(self):
+    def load_weights(self,path):
         
-        with open('weights.pkl', 'rb') as f:
+        with open(path, 'rb') as f:
             dic = pickle.load(f)
 
         i=0
