@@ -16,7 +16,7 @@
    4.  Stride
    5.  Kernal Size (Size of the Filter ex: 3x3 filter)
   #### Conv2D Takes input img (Channel , Width , Height)  with N imgs -> (N , Ch , H , W) and Kernal Size 
-  #### And we calculate the output size(H,W) by the formula
+  #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And we calculate the output size(H,W) by the formula :
   <p align="center">
   <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/shape.png" />
   </p>
@@ -46,9 +46,9 @@
 
 
 ##  4. Backward Path Theoretically<a name="BPT"></a>
-> ### In the Backward we need to Calculate :
- >> #### 1. Grad X wrt L(Loss Func)
- >> #### 2. Grad W wrt L(Loss Func)
+   ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the Backward we need to Calculate :
+   ####   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Grad X wrt L(Loss Func)
+   ####   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Grad W wrt L(Loss Func)
 ![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/Backward.gif)
  #### <div align="center">This GIF demonstrate the Calculation of Grad W </div>
 
