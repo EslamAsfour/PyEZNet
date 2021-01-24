@@ -22,7 +22,7 @@
    - [DataLoader](#DataLoader)
       - [`LoadingData`](#Loading_data)
       - [`Preprocessing Data`](#Preprocessing_data)
-   - [`Net`](#Net)
+   - [Net](#Net)
 
 
 # Install our package<a name="Install_our_package"></a>
@@ -46,17 +46,17 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 
 
 # Modules <a name="Modules"></a>
-## Layers <a name="Layers"></a>
-## Fully Connected :<a name="FCD"></a>
+# Layers <a name="Layers"></a>
+## 1. Fully Connected <a name="FCD"></a>
 
 -----
 
-## Conv2D :<a name="Conv2D"></a>
-### [1. Inputs , Outputs](#IO)
-### [2. Forward Path Theoretically](#FPT)
-### [3. Forward Path in Code](#FPIC)
-### [4. Backward Path Theoretically](#BPT)
-### [5. Backward Path in Code](#BPIC)
+## 2. Conv2D :<a name="Conv2D"></a>
+### &nbsp;&nbsp;&nbsp;&nbsp;[1. Inputs , Outputs](#IO)
+### &nbsp;&nbsp;&nbsp;&nbsp;[2. Forward Path Theoretically](#FPT)
+### &nbsp;&nbsp;&nbsp;&nbsp;[3. Forward Path in Code](#FPIC)
+### &nbsp;&nbsp;&nbsp;&nbsp;[4. Backward Path Theoretically](#BPT)
+### &nbsp;&nbsp;&nbsp;&nbsp;[5. Backward Path in Code](#BPIC)
 
 ### 1. Inputs , Outputs<a name="IO"></a>
   
@@ -137,7 +137,7 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 
 -----
 
-## Max Pooling & Average Pooling :<a name="POOL"></a>
+## 3. Max Pooling & Average Pooling :<a name="POOL"></a>
 ### Why do we perform pooling? 
 To reduce variance, reduce computation complexity (as 2*2 max pooling/average pooling reduces 75% data) and extract low level features from neighbourhood.
 
@@ -155,7 +155,7 @@ Although both are used for same reason, but max pooling is better for extracting
 -----
 
 ## Loss Functions: <a name="Loss_functions"></a>
-### Cross Entropy Loss:<a name="CE_LOSS"></a>
+### Cross Entropy Loss: <a name="CE_Loss"></a>
 
 Cross Entropy is used for multi-class classification, it takes three inputs:
 1. X:The output of the fully connected layers, which corresponds to the prediction.
