@@ -1,9 +1,9 @@
 import numpy as np
-from modules.Layer import *
-from modules.LOSS_FUNC import Cross_Entropy_Loss
-from modules.Activation_Function import Relu,Softmax
-from modules.Net import Net
-from modules.PreProcessing_data import GetData
+from PyNNN.Layer import *
+from PyNNN.LOSS_FUNC import Cross_Entropy_Loss
+from PyNNN.Activation_Function import Relu,Softmax
+from PyNNN.Net import Net
+from PyNNN.PreProcessing_data import GetData
 
 
 # Load Data

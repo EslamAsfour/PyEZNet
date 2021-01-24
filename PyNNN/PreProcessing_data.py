@@ -1,5 +1,5 @@
 import numpy as np
-import modules.DataLoader as DataLoader
+import PyNNN.DataLoader as DataLoader
 
 def GetData():
     print('Loadind data......')

@@ -1,8 +1,8 @@
 *.vscode
 *.txt
-modules/__pycache__/
+PyNNN/__pycache__/
 .idea/
-/modules/Untracked.py
+/PyNNN/Untracked.py
 Diagrams-Docs/Lenet_Arch.pdf
 TestSoftmax.py
 *.csv

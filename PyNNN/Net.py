@@ -1,6 +1,6 @@
-from modules.LOSS_FUNC import Loss
-from modules.Diff_Func import Diff_Func
-from modules.Layer import Layer
+from PyNNN.LOSS_FUNC import Loss
+from PyNNN.Diff_Func import Diff_Func
+from PyNNN.Layer import Layer
 import numpy as np
 import pickle
 
