@@ -25,12 +25,12 @@
    - [`Net`](#Net)
 
 
-## Install our package<a name="Install_our_package"></a>
+# Install our package<a name="Install_our_package"></a>
 ```python
 pip install PyNNN
 ```
 -----
-## Potential Output <a name="Example"></a>
+# Potential Output <a name="Example"></a>
 
 This is an example for the output of a LeNet trained on a MNIST data set.
 
@@ -45,42 +45,42 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 -----
 
 
-## Modules <a name="Modules"></a>
-### Layers <a name="Layers"></a>
-#### **Fully Connected :**<a name="FCD"></a>
+# Modules <a name="Modules"></a>
+## Layers <a name="Layers"></a>
+## Fully Connected :<a name="FCD"></a>
 
 -----
 
-#### **Conv2D :**<a name="Conv2D"></a>
-##### [1. Inputs , Outputs](#IO)
-##### [2. Forward Path Theoretically](#FPT)
-##### [3. Forward Path in Code](#FPIC)
-##### [4. Backward Path Theoretically](#BPT)
-##### [5. Backward Path in Code](#BPIC)
+## Conv2D :<a name="Conv2D"></a>
+### [1. Inputs , Outputs](#IO)
+### [2. Forward Path Theoretically](#FPT)
+### [3. Forward Path in Code](#FPIC)
+### [4. Backward Path Theoretically](#BPT)
+### [5. Backward Path in Code](#BPIC)
 
-#### 1. Inputs , Outputs<a name="IO"></a>
+### 1. Inputs , Outputs<a name="IO"></a>
   
         
-  #### Inputs for the layer :
+  ### Inputs for the layer :
    1.  in_Channels
    2.  out_Channels (Number of Filter in the Conv Layer)
    3.  Padding
    4.  Stride
    5.  Kernal Size (Size of the Filter ex: 3x3 filter)
-  #### Conv2D Takes input img (Channel , Width , Height)  with N imgs -> (N , Ch , H , W) and Kernal Size 
-  #### And we calculate the output size(H,W) by the formula :
+  ### Conv2D Takes input img (Channel , Width , Height)  with N imgs -> (N , Ch , H , W) and Kernal Size 
+  ### And we calculate the output size(H,W) by the formula :
   <p align="center">
   <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/shape.png" />
   </p>
 
 
 
-####  2. Forward Path Theoretically<a name="FPT"></a>
+###  2. Forward Path Theoretically<a name="FPT"></a>
   ![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/Forward.gif)
   
 
 
-####  3. Forward Path in Code<a name="FPIC"></a>
+###  3. Forward Path in Code<a name="FPIC"></a>
   ```python
     #loop over every Img
           for n in range(N):
@@ -97,17 +97,17 @@ This is an example for the output of a LeNet trained on a MNIST data set.
   ```
 
 
-####  4. Backward Path Theoretically<a name="BPT"></a>
-   #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the Backward we need to Calculate :
-   ####   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Grad X wrt L(Loss Func)
-   ####   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Grad W wrt L(Loss Func)
+###  4. Backward Path Theoretically<a name="BPT"></a>
+   ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the Backward we need to Calculate :
+   ###   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Grad X wrt L(Loss Func)
+   ###   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Grad W wrt L(Loss Func)
 ![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/Backward.gif)
- #### <div align="center">This GIF demonstrate the Calculation of Grad W </div>
+ ### <div align="center">This GIF demonstrate the Calculation of Grad W </div>
 
 
   
   
-####  5. Backward Path in Code<a name="BPIC"></a>
+###  5. Backward Path in Code<a name="BPIC"></a>
 
 
   ```python
@@ -137,8 +137,8 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 
 -----
 
-#### **Max Pooling & Average Pooling :**<a name="POOL"></a>
-## Why do we perform pooling? 
+## Max Pooling & Average Pooling :<a name="POOL"></a>
+### Why do we perform pooling? 
 To reduce variance, reduce computation complexity (as 2*2 max pooling/average pooling reduces 75% data) and extract low level features from neighbourhood.
 
 In this project we built:
@@ -154,8 +154,8 @@ Although both are used for same reason, but max pooling is better for extracting
 
 -----
 
-### Loss Functions: <a name="Loss_functions"></a>
-#### Cross Entropy Loss:<a name="CE_LOSS"></a>
+## Loss Functions: <a name="Loss_functions"></a>
+### Cross Entropy Loss:<a name="CE_LOSS"></a>
 
 Cross Entropy is used for multi-class classification, it takes three inputs:
 1. X:The output of the fully connected layers, which corresponds to the prediction.
@@ -177,8 +177,14 @@ Function returns The gradient values from the cache that was calculated by Calc_
 it calculates grad using the euqation: q[i]−y[i] where q is the probabilities from softmax, y[i]=1 if i is the true label only and equal zero if otherwise.
 then it stores gradient values in the cache to be used in backward probagation.
 
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/crossentropy.png" />
+  </p>
+
+
 -----
-### Activation Functions <a name="Activation_functions"></a>
+## Activation Functions <a name="Activation_functions"></a>
 
 In this module we implement our Activation Functions and their derivatives:
 We implement a class for each activation function. Each class contains three functions (forward function, backward functions and local_grad function). All of them inherit from Activation_Function class.<br>
@@ -196,8 +202,8 @@ Softmax                       |Tanh                      |Sigmoid
 ![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Softmax.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Tanh.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/sigmoid.jfif) |
 
 -----
-### DataLoader <a name="DataLoader"></a>
-#### **Loading Data:**<a name="Loading_data"></a>
+## DataLoader <a name="DataLoader"></a>
+### **Loading Data:**<a name="Loading_data"></a>
 
 In this Dataloader script we download our dataset from "http://yann.lecun.com/exdb/mnist/".
 
@@ -232,7 +238,7 @@ def test_labels():
     return download_and_parse_mnist_file('t10k-labels-idx1-ubyte.gz')
 
 ```
-#### **Preprocessing Data:** <a name="Preprocessing_data"></a>
+### **Preprocessing Data:** <a name="Preprocessing_data"></a>
 In this script we just :
 
 1. Import our DataLoader script and use it to get our training and testing data with their labels.
@@ -270,7 +276,7 @@ def GetData():
 ```
 -----
 
-### Net: <a name="Net"></a>
+## Net: <a name="Net"></a>
 This script was used to test our CNN accuracy it consists of one class "Net"
 
 1. We check that both of loss_fn and layer that will be the input to our CNN is one of our loss functions and layers 
