@@ -63,13 +63,22 @@ class Cross_Entropy_Loss(Loss):
         #X:is np array with shape (patch,dimen)
         #Y:is np array with shape (patch,1)
         #value of Y in every patch is the truth ground dimension.
+        '''
         probs=self.cache['probs']
-        temp_grad=probs
+        temp_grad= probs
         for i in range (Y.size):
             temp_grad[i,Y[i]]-=1
         grad={}
         grad['X']=temp_grad
         return grad
+        '''
+        probs = self.cache['probs']
+        ones = np.zeros_like(probs)
+        for row_idx, col_idx in enumerate(Y):
+            ones[row_idx, col_idx] = 1.0
+
+        grads = {'X': (probs - ones)/float(len(X))}
+        return grads
 
 
     @staticmethod
@@ -134,7 +143,7 @@ class Hinge_Loss(Loss):
 
 
 
-
+"""
 ########################## Test case for Cross Entropy################################
 print("############################# Cross Entropy loss test ############################\n")
 list1=[[1,2,3,4,5,6],[6,2,3,4,6,7],[3,5,7,8,3,5],[1,5,8,4,5,6],[1,2,6,4,8,6]]
@@ -165,3 +174,5 @@ forward=loss2(X,Y)
 print("Total Hinge loss:",forward,"\n")
 backward=loss2.backward()
 print("Gradient array of Hinge loss:\n",backward,"\n")
+"""
+
