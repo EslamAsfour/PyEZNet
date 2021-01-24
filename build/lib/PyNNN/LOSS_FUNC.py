@@ -1,5 +1,5 @@
 import numpy as np
-from PyNNN.Diff_Func import Diff_Func
+from PyEZNet.Diff_Func import Diff_Func
 
 
 class Loss(Diff_Func):

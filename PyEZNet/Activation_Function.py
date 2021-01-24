@@ -2,7 +2,7 @@ import numpy
 import numpy as np
 import math
 from math import exp
-from PyNNN.Diff_Func import Diff_Func
+from PyEZNet.Diff_Func import Diff_Func
 
 
 '''Activation Functions:

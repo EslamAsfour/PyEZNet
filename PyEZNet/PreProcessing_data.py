@@ -1,5 +1,5 @@
 import numpy as np
-import PyNNN.DataLoader as DataLoader
+import PyEZNet.DataLoader as DataLoader
 
 def GetData():
     print('Loadind data......')

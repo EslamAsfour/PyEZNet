@@ -1,8 +1,8 @@
 import numpy as np
-from PyNNN.Layer import *
-from PyNNN.LOSS_FUNC import Cross_Entropy_Loss
-from PyNNN.Activation_Function import Relu,Softmax
-from PyNNN.Net import Net
+from PyEZNet.Layer import *
+from PyEZNet.LOSS_FUNC import Cross_Entropy_Loss
+from PyEZNet.Activation_Function import Relu,Softmax
+from PyEZNet.Net import Net
 # functions for visualization
 
 np.random.seed(0)

@@ -1,8 +1,8 @@
-from PyNNN.Diff_Func import Diff_Func
+from PyEZNet.Diff_Func import Diff_Func
 import numpy as np
 from math import sqrt
 from itertools import product
-from PyNNN.utils import ZeroPadding
+from PyEZNet.utils import ZeroPadding
 
 
 class Layer (Diff_Func):

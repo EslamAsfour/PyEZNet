@@ -1,4 +1,4 @@
-# PyNNN
+# PyEZNet
 # Contents
  - [**Install our package**](#Install_our_package)
  - [**Potential Output**](#Example)
@@ -30,7 +30,7 @@
 
 # Install our package<a name="Install_our_package"></a>
 ```python
-pip install PyNNN
+pip install PyEZNet
 ```
 -----
 # Potential Output <a name="Example"></a>
@@ -38,11 +38,11 @@ pip install PyNNN
 This is an example for the output of a LeNet trained on a MNIST data set.
 
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EslamAsfour/Custom_DL_Framework-Project/blob/main/(Final)LeNet_Training.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EslamAsfour/PyEZNet/blob/main/(Final)LeNet_Training.ipynb)
 
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/expected_output.gif" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/expected_output.gif" />
   </p>
   
 -----
@@ -59,7 +59,7 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 Fully Connected layer is used to take the output of convolution/pooling and predicts the best label to describe the image
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fullyconnected.jpeg" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/fullyconnected.jpeg" />
   </p>
 
 <br>
@@ -130,13 +130,13 @@ Fully Connected layer is used to take the output of convolution/pooling and pred
   ### Conv2D Takes input img (Channel , Width , Height)  with N imgs -> (N , Ch , H , W) and Kernal Size 
   ### And we calculate the output size(H,W) by the formula :
   <p align="center">
-  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/shape.png" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/Conv2D-in-Dev/Diagrams-Docs/shape.png" />
   </p>
 
 
 
 ###  2. Forward Path Theoretically<a name="FPT"></a>
-  ![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/Forward.gif)
+  ![alt text](https://github.com/EslamAsfour/PyEZNet/blob/Conv2D-in-Dev/Diagrams-Docs/Forward.gif)
   
 
 
@@ -161,7 +161,7 @@ Fully Connected layer is used to take the output of convolution/pooling and pred
    ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the Backward we need to Calculate :
    ###   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Grad X wrt L(Loss Func)
    ###   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Grad W wrt L(Loss Func)
-![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/Conv2D-in-Dev/Diagrams-Docs/Backward.gif)
+![alt text](https://github.com/EslamAsfour/PyEZNet/blob/Conv2D-in-Dev/Diagrams-Docs/Backward.gif)
  ### <div align="center">This GIF demonstrate the Calculation of Grad W </div>
 
 
@@ -209,7 +209,7 @@ Max pooling extracts the most important features like edges whereas, average poo
 Although both are used for same reason, but max pooling is better for extracting the extreme features. Average pooling sometimes can’t extract good features because it takes all into count and results an average value which may/may not be important for object detection type tasks.
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/mpool.jfif" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/mpool.jfif" />
   </p>
 
 -----
@@ -239,7 +239,7 @@ then it stores gradient values in the cache to be used in backward probagation.
 
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/crossentropy.png" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/crossentropy.png" />
  </p>
 
 
@@ -257,9 +257,9 @@ Local Gradient Function: we calculate the derivative of each function.<br>
 
 Hard Tanh                        |Leaky ReLU                      |ReLU
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Hard_Tanh.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Leaky%20ReLU.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/ReLU.jfif) |
+![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/Hard_Tanh.jfif) |![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/Leaky%20ReLU.jfif) |![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/ReLU.jfif) |
 Softmax                       |Tanh                      |Sigmoid
-![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Softmax.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Tanh.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/sigmoid.jfif) |
+![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/Softmax.jfif) |![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/Tanh.jfif) |![](https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/sigmoid.jfif) |
 
 -----
 ## `DataLoader` <a name="DataLoader"></a>
@@ -446,7 +446,7 @@ We loop over the layers of the Net and load the saved weights into the current w
 For example, calculating the True Negatives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/tn1.jfif" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/tn1.jfif" />
   </p>
 
 
@@ -460,7 +460,7 @@ For example, calculating the True Negatives for the Greyhound class (assuming we
 For example, calculating the False Positives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fp1.jfif" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/fp1.jfif" />
   </p>
   
 ```python
@@ -473,7 +473,7 @@ For example, calculating the False Positives for the Greyhound class (assuming w
 For example, calculating the False Negatives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
 
 <p align="center">
-  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fn1.jfif" />
+  <img src="https://github.com/EslamAsfour/PyEZNet/blob/main/Diagrams-Docs/fn1.jfif" />
   </p>
 
 ```python

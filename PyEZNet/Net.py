@@ -1,6 +1,6 @@
-from PyNNN.LOSS_FUNC import Loss
-from PyNNN.Diff_Func import Diff_Func
-from PyNNN.Layer import Layer
+from PyEZNet.LOSS_FUNC import Loss
+from PyEZNet.Diff_Func import Diff_Func
+from PyEZNet.Layer import Layer
 import numpy as np
 import pickle
 
