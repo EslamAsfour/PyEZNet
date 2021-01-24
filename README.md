@@ -12,6 +12,7 @@
      - [Loss Functions](#Loss_functions)
        - [`CrossEntropy`](#CE_Loss)
        - `MeanSquareError`
+       - `Hinge Loss`
      - [Activation Functions](#Activation_functions)
        - `ReLU`
        - `Leaky ReLU`
@@ -19,10 +20,12 @@
        - `Softmax`
        - `Tanh`
        - `Hard Tanh`
+       - `Linear`
    - [DataLoader](#DataLoader)
       - [`LoadingData`](#Loading_data)
       - [`Preprocessing Data`](#Preprocessing_data)
    - [Net](#Net)
+   - [Evaluation](#Evaluation)
 
 
 # Install our package<a name="Install_our_package"></a>
@@ -46,8 +49,65 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 
 
 # Modules <a name="Modules"></a>
+
+-----
+
+
 # `Layers` <a name="Layers"></a>
-## 1. Fully Connected <a name="FCD"></a>
+## 1. Fully Connected :<a name="FCD"></a>
+
+Fully Connected layer is used to take the output of convolution/pooling and predicts the best label to describe the image
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fullyconnected.jpeg" />
+  </p>
+
+<br>
+
+1.	We get the output from convolution/pooling and initialize our weights vector with the same dimension
+
+
+```python
+
+   def _init_Weights(self,input_dim,output_dim):
+        scale = 1/ sqrt(input_dim)
+                 self.weights['W'] = scale *np.random.randn(input_dim,output_dim)
+                 self.weights['b'] = scale *np.random.randn(1,output_dim)
+         
+```
+
+
+
+
+
+2.	Forward function take X 'vector of numpy array' where it's size is (no_of_batch,input_dim)and it's output is Y = (WX+b)
+
+
+```python
+  def forward(self,X):         output=np.dot(X,self.weights['W']) + self.weights['b']
+            self.cache['X']=X
+        self.cache['output']=output
+        return output
+```
+
+
+
+3.	Our goal with backpropagation is to update each of the weights in the network, so that they cause the actual output to be closer the target output using 'Chain Rule'
+
+
+
+```python
+
+ def backward(self,dY):
+
+            dX=dY.dot(self.grad['X'].T)
+            X=self.cache['X']
+            dw=self.grad['W'].T.dot(dY)
+            db=np.sum(dY,axis=0,keepdims=True)          		  	self.weights_Update={'W': dw,'b': db}
+        return dX
+```
+
+
 
 -----
 
@@ -337,6 +397,109 @@ def loss(self,x,y):
         return back
 
 ```
+**(save_weights)** :
 
+<br>
+
+Saving the current weights in a pickle file ”.pkl” using the epoch and batch in the file name.
+ We loop over the layers of the Net and save the weights calculated in each layer in that file.
+
+<br>
+
+**(load_weights)**:
+
+<br>
+
+Loading the weights that have been saved before in a “.pkl” file so we could use it again.
+We loop over the layers of the Net and load the saved weights into the current weights of each layer in the net. 
+
+<br>
 
 -----
+
+## `Evaluation` <a name="Evaluation"></a>
+
+### The function's input:
+- [ ] Number of classes (categories)
+- [ ] True label
+- [ ] Predicted label
+
+### Then the function computes:
+- [ ] The confusion matrix (TP, TN, FP, FN)
+- [ ] Accuracy
+- [ ] Precision
+- [ ] Recall
+- [ ] Average Precision
+- [ ] Average Recall
+
+### How we calculate the output?
+
+1. TP (True Positive): The True Positives is the number of predictions where data labelled to belong to a particular class was correctly classified as the said class.
+
+```python 
+    for i in range(No_of_classes):
+        TP[i] = confussion_matrix[i][i]
+  ```
+  
+2. TN (True Negatives): The True Negative for a particular class is calculated by taking the sum of the values in every row and column except the row and column of the class we're trying to find the True Negatives for.
+
+For example, calculating the True Negatives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/tn1.jfif" />
+  </p>
+
+
+```python 
+    for i in range(No_of_classes):
+        TN[i]= Matrix_sum-(raw_sum[i]+column_sum[i])+confussion_matrix[i][i]
+```
+
+3. FP (False Positive): The False Positives for a particular class can be calculated by taking the sum of all the values in the column corresponding to that class except the True Positives value.
+
+For example, calculating the False Positives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fp1.jfif" />
+  </p>
+  
+```python
+    for i in range(No_of_classes):
+        FP[i]= column_sum[i]-confussion_matrix[i][i]
+```
+
+4. FN (False NEgative): The False Negatives for a particular class can be calculated by taking the sum of all the values in the row corresponding to that class except the True Positive values.
+
+For example, calculating the False Negatives for the Greyhound class (assuming we have 3 classes: Greyhound, Mastiff, Samoyed):
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/PyNNN/blob/main/Diagrams-Docs/fn1.jfif" />
+  </p>
+
+```python
+    for i in range(No_of_classes):
+        FN[i]=raw_sum[i]-confussion_matrix[i][i]
+```
+
+5. Accuracy =  TP / confusion matrix 
+
+```python
+    accurecy =  np.sum(TP)/Matrix_sum
+```
+ 
+6. Precision(class) = TP / (TP + FN)
+
+```python
+    for i in range(No_of_classes):
+        Precision[i]=TP[i]/(TP[i]+FN[i])
+```
+ 
+7. Recall(class) = TP / (TP + TN)
+ 
+ ```python
+   for i in range(No_of_classes):
+        Recall[i] = TP[i]/(TP[i]+TN[i])
+```
+ 
+ -----
+
