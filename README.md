@@ -178,9 +178,9 @@ it calculates grad using the euqation: q[i]−y[i] where q is the probabilities 
 then it stores gradient values in the cache to be used in backward probagation.
 
 
-<p align="center">
+
   <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/crossentropy.png" />
-  </p>
+ 
 
 
 -----
