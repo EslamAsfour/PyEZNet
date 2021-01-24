@@ -11,7 +11,7 @@
        - [`Flatten`](#FLATTEN)
      - [Loss Functions](#Loss_functions)
        - [`CrossEntropy`](#CE_Loss)
-       - [`MeanSquareError`](#MSE)
+       - `MeanSquareError`
      - [Activation Functions](#Activation_functions)
        - `ReLU`
        - `Leaky ReLU`
