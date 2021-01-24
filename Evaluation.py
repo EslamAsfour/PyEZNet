@@ -5,7 +5,6 @@ from modules.Net import Net
 from modules.PreProcessing_data import GetData
 import numpy as np
 #Todo
-
 '''
 1-create object from LeNet
 2-Loading our Pretrained Weights

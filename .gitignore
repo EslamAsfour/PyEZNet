@@ -7,7 +7,7 @@ Diagrams-Docs/Lenet_Arch.pdf
 TestSoftmax.py
 *.csv
 data
-*.pkl
+
 
 
 
