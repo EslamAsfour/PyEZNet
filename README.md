@@ -6,8 +6,8 @@
      - [Layers](#Layers)
        - [`FullyConnected`](#FCD)
        - [`Conv2D`](#Conv2D)
-       - [`MaxPooling`](#MPOOL)
-       - [`AvgPooling`](#APOOL)
+       - [`MaxPooling`](#POOL)
+       - [`AvgPooling`](#POOL)
        - [`Flatten`](#FLATTEN)
      - [Loss Functions](#Loss_functions)
        - [`CrossEntropy`](#CE_Loss)
@@ -23,12 +23,13 @@
       - [`LoadingData`](#Loading_data)
       - [`Preprocessing Data`](#Preprocessing_data)
    - [`Net`](#Net)
-  - [Activations](#activations)
+
 
 ## Install our package<a name="Install_our_package"></a>
 ```python
 pip install PyNNN
 ```
+-----
 ## Potential Output <a name="Example"></a>
 
 This is an example for the output of a LeNet trained on a MNIST data set.
@@ -40,10 +41,15 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 <p align="center">
   <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/expected_output.gif" />
   </p>
+  
+-----
+
 
 ## Modules <a name="Modules"></a>
 ### Layers <a name="Layers"></a>
 #### **Fully Connected :**<a name="FCD"></a>
+
+-----
 
 #### **Conv2D :**<a name="Conv2D"></a>
 ##### [1. Inputs , Outputs](#IO)
@@ -51,7 +57,6 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 ##### [3. Forward Path in Code](#FPIC)
 ##### [4. Backward Path Theoretically](#BPT)
 ##### [5. Backward Path in Code](#BPIC)
-
 
 #### 1. Inputs , Outputs<a name="IO"></a>
   
@@ -130,10 +135,49 @@ This is an example for the output of a LeNet trained on a MNIST data set.
                     dW[c_w, c_i, h ,w] = np.sum(Sub_X*dY_rec_field)
    ```
 
-<br>
+-----
+
+#### **Max Pooling & Average Pooling :**<a name="POOL"></a>
+## Why do we perform pooling? 
+To reduce variance, reduce computation complexity (as 2*2 max pooling/average pooling reduces 75% data) and extract low level features from neighbourhood.
+
+In this project we built:
+- [x] Max pooling
+- [x] Average Pooling 
+
+Max pooling extracts the most important features like edges whereas, average pooling extracts features so smoothly. For image data, you can see the difference.
+Although both are used for same reason, but max pooling is better for extracting the extreme features. Average pooling sometimes can’t extract good features because it takes all into count and results an average value which may/may not be important for object detection type tasks.
+
+<p align="center">
+  <img src="https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/mpool.jfif" />
+  </p>
+
+-----
+
+### Loss Functions: <a name="Loss_functions"></a>
+#### Cross Entropy Loss:<a name="CE_LOSS"></a>
+
+Cross Entropy is used for multi-class classification, it takes three inputs:
+1. X:The output of the fully connected layers, which corresponds to the prediction.
+2. Y:The true output, which is zeros for all values except for the true label equals one.
+3. The way of collecting total loss, either summing, or mean or average, the default is Mean.
+
+**The Forward Function:**
+starts by using softmax to generate probabilities for the input prediction array.
+Then uses loss eqaution to calculate loss for every image which is: -sigma(log(X[i]*Y[i]) where i is used in for loop among the labels of each image.
+After that it calculates total loss.
+The function stores probabilities in the cache to be used in backward probagation.
 
 
-### Loss Functions <a name="Loss_functions"></a>
+**The Backward Function:**
+Function returns The gradient values from the cache that was calculated by Calc_grad function.
+
+
+**Calc_grad Function:**
+it calculates grad using the euqation: q[i]−y[i] where q is the probabilities from softmax, y[i]=1 if i is the true label only and equal zero if otherwise.
+then it stores gradient values in the cache to be used in backward probagation.
+
+-----
 ### Activation Functions <a name="Activation_functions"></a>
 
 In this module we implement our Activation Functions and their derivatives:
@@ -151,6 +195,7 @@ Hard Tanh                        |Leaky ReLU                      |ReLU
 Softmax                       |Tanh                      |Sigmoid
 ![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Softmax.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Tanh.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/sigmoid.jfif) |
 
+-----
 ### DataLoader <a name="DataLoader"></a>
 #### **Loading Data:**<a name="Loading_data"></a>
 
@@ -223,13 +268,69 @@ def GetData():
     return training_data,training_labels,testing_data,testing_labels
 
 ```
+-----
+
+### Net: <a name="Net"></a>
+This script was used to test our CNN accuracy it consists of one class "Net"
+
+1. We check that both of loss_fn and layer that will be the input to our CNN is one of our loss functions and layers 
+"Conv_2D,MaxPooling,FC"
+
+```python
+def __init__(self,layers,loss):
+        assert isinstance(loss,Loss) #the loss function must be as instance of nn.losses.Loss
+        for layer in layers:
+            assert isinstance(layer,Diff_Func)
+            #layer must be instance of nn.layers.Layer or nn.layers.Function
+
+        self.layers=layers
+        self.loss_function=loss
+```
 
 
-<br>
-<br>
-<br>
-<br>
 
-## Our Modules 
+2. Using Forward Path to go through the input layers one by one respectively.
 
-![alt text](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Custom_DL_Framework%20Project%20Diagram.png)
+```python
+ def forward(self,x):
+        '''
+        :param x: numpy input array to our net
+        :return:  numpy output array
+        '''
+
+        for layer in self.layers:
+            x= layer(x)
+        return x
+```
+
+3. Calculating our loss through the forward path 
+
+```python
+def loss(self,x,y):
+        '''
+        :param x: numpy array output of forward pass
+        :param y: numpy array which is true values
+        :return: numpy float loss value
+        '''
+        loss = self.loss_function(x,y)
+        return loss
+```
+
+4. calculating backward path in order to decrease our loss and helping the model train
+
+
+```python
+ def backward(self):
+        '''
+        calculate backward pass for net which must be calculated after calculate forwad pass and loss
+        :return: numpy array of shape matching the input during forward pass
+        '''
+        back=self.loss_function.backward()
+        for layer in reversed(self.layers):
+            back=layer.backward(back)
+        return back
+
+```
+
+
+-----
