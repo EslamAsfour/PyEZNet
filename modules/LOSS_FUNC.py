@@ -1,5 +1,7 @@
 import numpy as np
-from Diff_Func import Diff_Func
+from modules.Diff_Func import Diff_Func
+
+
 class Loss(Diff_Func):
     """
         Abstract Class to represent the Construction of the Loss Functions
@@ -35,11 +37,9 @@ class Loss(Diff_Func):
 
 
 class Cross_Entropy_Loss(Loss):
-    """
-        Abstract Class to represent the Construction of the Multi class cross entropy Loss Function used for multi class classification.
-    """
 
-    def forward(self, X, Y,total_loss="average"):
+
+    def forward(self, X, Y,total_loss="mean"):
         #X:is np array with shape (patch,dimen)
         #Y:is np array with shape (patch,1)
         #value of Y in every patch is the truth ground dimension.
@@ -49,8 +49,8 @@ class Cross_Entropy_Loss(Loss):
         for i in range (Y.size):
             #calculating the loss of every patch,prob. of the corresponding ground truth only as all other values will be *(0)
             loss_array[i]= -(np.log(X_probs[i,Y[i]]))
-        if(total_loss=="average"):
-            return np.average(loss_array)
+        if(total_loss=="mean"):
+            return np.mean(loss_array)
         elif (total_loss=="sum"):
             return np.sum(loss_array)
         elif (total_loss =="median"):
@@ -87,6 +87,37 @@ class Cross_Entropy_Loss(Loss):
         sum_exp = np.sum(X_exp, axis=1, keepdims=True)
         return (X_exp / sum_exp)
 
+
+
+class MeanSquareLoss(Loss):
+    """
+        Abstract Class to represent the Construction of the Loss Functions
+    """
+    def forward(self, X, Y):
+        """
+        X=output of layers
+        Y=True labels
+        """
+        err = np.zeros(X.size)
+        squ_sub = np.zeros(X.size)
+        err = np.subtract(X,Y)
+        squ_sub = np.square(err)
+        sum = np.sum(squ_sub,axis=1 ,keepdims= True)
+        total_loss = np.average(sum)
+
+        return total_loss
+
+
+
+    def calc_Grad(self, X, Y):
+        """
+        Local gradient with respect to X at (X, Y).
+        Args:
+        """
+        grad = {}
+        grad['X'] = 2*(X-Y)
+
+        return grad
 
 class Hinge_Loss(Loss):
     """
@@ -140,39 +171,4 @@ class Hinge_Loss(Loss):
         return grad
 
 
-
-
-
-"""
-########################## Test case for Cross Entropy################################
-print("############################# Cross Entropy loss test ############################\n")
-list1=[[1,2,3,4,5,6],[6,2,3,4,6,7],[3,5,7,8,3,5],[1,5,8,4,5,6],[1,2,6,4,8,6]]
-list2=[5,3,5,2,1]
-X=np.array(list1)
-Y=np.array(list2)
-print("X:",X,"\n")
-print("Y:",Y,"\n")
-
-loss1=Cross_Entropy_Loss()
-foro=loss1(X,Y)
-print("Total cross entropy loss:",foro,"\n")
-back=loss1.backward()
-print("Gradient array of cross entropy loss:\n",back,"\n")
-
-
-
-##################################### Test case for Hinge loss ########################
-print("############################# Hinge loss test ############################\n\n")
-list2=[-5,3,-5,2,-1]
-list1=[2,5,7,9,5]
-X=np.array(list1)
-Y=np.array(list2)
-print("X:",X,"\n")
-print("Y:",Y,"\n")
-loss2=Hinge_Loss()
-forward=loss2(X,Y)
-print("Total Hinge loss:",forward,"\n")
-backward=loss2.backward()
-print("Gradient array of Hinge loss:\n",backward,"\n")
-"""
 
