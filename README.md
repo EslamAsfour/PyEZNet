@@ -46,7 +46,7 @@ This is an example for the output of a LeNet trained on a MNIST data set.
 
 
 # Modules <a name="Modules"></a>
-# Layers <a name="Layers"></a>
+# `Layers` <a name="Layers"></a>
 ## 1. Fully Connected <a name="FCD"></a>
 
 -----
@@ -154,7 +154,7 @@ Although both are used for same reason, but max pooling is better for extracting
 
 -----
 
-## Loss Functions: <a name="Loss_functions"></a>
+## `Loss Functions` <a name="Loss_functions"></a>
 ### Cross Entropy Loss: <a name="CE_Loss"></a>
 
 Cross Entropy is used for multi-class classification, it takes three inputs:
@@ -184,7 +184,7 @@ then it stores gradient values in the cache to be used in backward probagation.
 
 
 -----
-## Activation Functions <a name="Activation_functions"></a>
+## `Activation Functions`<a name="Activation_functions"></a>
 
 In this module we implement our Activation Functions and their derivatives:
 We implement a class for each activation function. Each class contains three functions (forward function, backward functions and local_grad function). All of them inherit from Activation_Function class.<br>
@@ -202,8 +202,8 @@ Softmax                       |Tanh                      |Sigmoid
 ![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Softmax.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/Tanh.jfif) |![](https://github.com/EslamAsfour/Custom_DL_Framework-Project/blob/main/Diagrams-Docs/sigmoid.jfif) |
 
 -----
-## DataLoader <a name="DataLoader"></a>
-### **Loading Data:**<a name="Loading_data"></a>
+## `DataLoader` <a name="DataLoader"></a>
+### **1. Loading Data:**<a name="Loading_data"></a>
 
 In this Dataloader script we download our dataset from "http://yann.lecun.com/exdb/mnist/".
 
@@ -238,7 +238,7 @@ def test_labels():
     return download_and_parse_mnist_file('t10k-labels-idx1-ubyte.gz')
 
 ```
-### **Preprocessing Data:** <a name="Preprocessing_data"></a>
+### **2. Preprocessing Data:** <a name="Preprocessing_data"></a>
 In this script we just :
 
 1. Import our DataLoader script and use it to get our training and testing data with their labels.
@@ -276,7 +276,7 @@ def GetData():
 ```
 -----
 
-## Net: <a name="Net"></a>
+## `Net` <a name="Net"></a>
 This script was used to test our CNN accuracy it consists of one class "Net"
 
 1. We check that both of loss_fn and layer that will be the input to our CNN is one of our loss functions and layers 
